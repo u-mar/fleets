@@ -26,6 +26,10 @@ interface Transaction {
   id: string
   type: string
   amount: number
+  description: string | null
+  category: string | null
+  date: Date
+  createdAt: Date
 }
 
 export default function DashboardOverview() {
