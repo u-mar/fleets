@@ -247,7 +247,7 @@ export default function MaintenancePage() {
             <div className="space-y-4 min-h-[300px]">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-blue-900">
-                  <span className="font-medium">Choose:</span> Link maintenance to an ongoing trip or select "General Maintenance".
+                  <span className="font-medium">Choose:</span> Link maintenance to an ongoing trip or select &quot;General Maintenance&quot;.
                 </p>
               </div>
               
