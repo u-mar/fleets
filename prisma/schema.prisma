@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user") // admin, user
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Truck {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  plate     String     @unique
+  capacity  Float
+  status    String     @default("available") // available, in-transit, maintenance
+  
+  // Additional fields
+  make      String?
+  model     String?
+  year      String?
+  color     String?
+  vin       String?
+  owner     String?
+  ownerPhone String?
+  ownerEmail String?
+  purchasePrice String?
+  purchaseDate String?
+  insuranceProvider String?
+  insurancePolicy String?
+  insuranceExpiry String?
+  registrationExpiry String?
+  notes     String?
+  
+  hireOuts    HireOut[]
+  maintenances Maintenance[]
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model HireOut {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  truckId   String     @db.ObjectId
+  truck     Truck      @relation(fields: [truckId], references: [id], onDelete: Cascade)
+  
+  customerName String
+  customerPhone String?
+  customerEmail String?
+  customerCompany String?
+  
+  startDate DateTime
+  endDate   DateTime?
+  destination String?
+  origin    String?
+  loadAmount Float
+  loadType  String?
+  
+  driverName String?
+  driverPhone String?
+  driverLicense String?
+  
+  advancePayment Float?
+  balancePayment Float?
+  paymentMethod String?
+  totalEarnings Float
+  
+  maintenances Maintenance[]
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Maintenance {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  truckId   String     @db.ObjectId
+  truck     Truck      @relation(fields: [truckId], references: [id], onDelete: Cascade)
+  
+  hireOutId String?    @db.ObjectId
+  hireOut   HireOut?   @relation(fields: [hireOutId], references: [id], onDelete: SetNull)
+  
+  name      String
+  type      String     // fuel, repair, inspection, etc.
+  cost      Float
+  date      DateTime   @default(now())
+  details   String?
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Transaction {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  type        String     // income, expense
+  amount      Float
+  description String?
+  category    String?
+  date        DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
