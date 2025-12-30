@@ -8,8 +8,10 @@ interface Transaction {
   id: string
   type: string
   amount: number
-  description?: string
+  description: string | null
+  category: string | null
   date: Date
+  createdAt: Date
 }
 
 export default function TransactionsPage() {
